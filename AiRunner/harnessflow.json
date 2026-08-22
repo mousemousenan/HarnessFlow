@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "paths": {
+    "requirements": "docs/harnessflow/00_REQUIREMENTS.md",
+    "design": "docs/harnessflow/01_DESIGN.md",
+    "plan": "docs/harnessflow/02_IMPLEMENTATION_PLAN.md",
+    "tasks": "docs/harnessflow/03_TASKS.json",
+    "state": "docs/harnessflow/04_STATE.md",
+    "handoffs": "docs/harnessflow/handoffs"
+  },
+  "resources": {
+    "task_prompt": "prompts/task_prompt.md",
+    "task_result_schema": "schemas/task_result.schema.json",
+    "tasks_schema": "schemas/tasks.schema.json"
+  },
+  "codex": {
+    "command": ["codex"],
+    "exec_args": [],
+    "sandbox": "workspace-write",
+    "model": null
+  },
+  "runner": {
+    "max_repair_attempts": 2,
+    "auto_commit": true,
+    "max_diff_chars": 60000,
+    "verify_command_prefixes": [
+      "pnpm",
+      "npm",
+      "yarn",
+      "npx",
+      "node",
+      "deno",
+      "bun",
+      "python",
+      "python3",
+      "pytest",
+      "cargo",
+      "go",
+      "dotnet",
+      "mvn",
+      "gradle",
+      "make",
+      "cmake",
+      "bash",
+      "sh",
+      "pwsh",
+      "powershell",
+      "git"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HarnessFlow single task result",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "task_id": { "type": "string" },
+    "result": {
+      "type": "string",
+      "enum": ["completed", "blocked", "failed"]
+    },
+    "changed_files": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "verification_summary": { "type": "string" },
+    "new_decisions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "new_invariants": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "blocking_reason": { "type": "string" }
+  },
+  "required": [
+    "task_id",
+    "result",
+    "changed_files",
+    "verification_summary",
+    "new_decisions",
+    "new_invariants",
+    "blocking_reason"
+  ]
+}

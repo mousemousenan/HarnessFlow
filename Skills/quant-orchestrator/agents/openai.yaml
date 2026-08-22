@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quant Orchestrator"
+  short_description: "按仓库状态连续实施、验证并记录 Cetus 量化策略开发各阶段"
+  default_prompt: "使用 $quant-orchestrator 从首个未完成阶段继续执行，直到全部完成或遇到允许的停止条件。"
