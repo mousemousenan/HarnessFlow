@@ -1,0 +1,92 @@
+{
+  "phases": [
+    {
+      "id": "P01",
+      "title": "替换为可独立验证的里程碑",
+      "depends_on": [],
+      "status": "todo",
+      "model_recommendation": {
+        "primary": "opus",
+        "economy": "sonnet",
+        "rationale": "说明这个阶段的判断密度与出错传播面，解释为什么配得上或配不上高档位"
+      },
+      "definition_of_done": [
+        "跑完这个阶段后项目处于什么可验证状态",
+        "所有任务通过独立验证",
+        "交付文档已产出"
+      ],
+      "deliverable": "docs/harnessflow/deliverables/P01.md",
+      "batches": [
+        {
+          "id": "P01-B1",
+          "mode": "parallel",
+          "tasks": [
+            {
+              "id": "P01-T01",
+              "title": "替换为第一个实现任务",
+              "agent_type": "coding",
+              "execution_mode": "parallel",
+              "model": "sonnet",
+              "status": "todo",
+              "depends_on": [],
+              "goal": "单一、可观察的目标",
+              "context": {
+                "read_first": ["docs/harnessflow/01_DESIGN.md"],
+                "queries": ["建议子代理先做的聚焦搜索"]
+              },
+              "allowed_paths": ["src/module_a/**"],
+              "expected_outputs": ["src/module_a/<file>"],
+              "acceptance": ["可观察、可判定的验收条件"],
+              "verify": ["替换为项目真实的非交互命令"],
+              "tests": "要新增或更新哪些测试，覆盖什么行为"
+            },
+            {
+              "id": "P01-T02",
+              "title": "与 T01 路径不相交的并行任务",
+              "agent_type": "testing",
+              "execution_mode": "parallel",
+              "model": "haiku",
+              "status": "todo",
+              "depends_on": [],
+              "goal": "单一、可观察的目标",
+              "context": {
+                "read_first": ["docs/harnessflow/01_DESIGN.md"],
+                "queries": []
+              },
+              "allowed_paths": ["tests/module_a/**"],
+              "expected_outputs": ["tests/module_a/<file>"],
+              "acceptance": ["可观察、可判定的验收条件"],
+              "verify": ["替换为项目真实的非交互命令"],
+              "tests": "被测接口签名已在更早批次冻结，故可与实现同批"
+            }
+          ]
+        },
+        {
+          "id": "P01-B2",
+          "mode": "serial",
+          "tasks": [
+            {
+              "id": "P01-T03",
+              "title": "收口任务：改动共享文件，必须串行",
+              "agent_type": "coding",
+              "execution_mode": "serial",
+              "model": "opus",
+              "status": "todo",
+              "depends_on": ["P01-T01", "P01-T02"],
+              "goal": "单一、可观察的目标",
+              "context": {
+                "read_first": ["docs/harnessflow/01_DESIGN.md"],
+                "queries": []
+              },
+              "allowed_paths": ["src/index.*"],
+              "expected_outputs": ["src/index.*"],
+              "acceptance": ["可观察、可判定的验收条件"],
+              "verify": ["替换为项目真实的非交互命令"],
+              "tests": "集成层测试说明"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

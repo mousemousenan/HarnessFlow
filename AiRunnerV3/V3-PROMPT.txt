@@ -1,0 +1,575 @@
+# Multi-Agent Task Graph Harness 升级任务
+
+## 背景
+
+当前项目已经实现了单 Agent 的 Task Graph Harness：
+
+核心组件：
+
+- DESIGN.md
+- IMPLEMENTATION_PLAN.md
+- 02_TASKS.json
+- 05_STATE.md
+- ai_runner.py
+
+当前模式：
+
+Task Graph
+    ↓
+ai_runner.py
+    ↓
+单个 Codex Context
+    ↓
+AI 实现
+    ↓
+Runner 验证
+    ↓
+Git Commit
+    ↓
+下一任务
+
+
+现在需要在现有方案基础上升级为：
+
+# Multi-Agent Task Graph Harness
+
+目标：
+
+让多个 AI Agent 根据任务依赖关系自动并行开发，同时保持：
+
+- 可控
+- 可验证
+- 可恢复
+- 可审计
+
+不要简单增加多个 AI 调用，而是设计一个真正的 Agent Orchestration Layer。
+
+---
+
+# 第一阶段：先分析现有系统
+
+在修改任何代码之前，请完整阅读：
+
+- ai_runner.py
+- 02_TASKS.json
+- 01_IMPLEMENTATION_PLAN.md
+- 05_STATE.md
+- task_prompt.md
+- task_result.schema.json
+
+输出：
+
+docs/MULTI_AGENT_DESIGN.md
+
+
+内容包括：
+
+## 1. 当前架构分析
+
+说明：
+
+- 当前任务调度方式
+- 当前状态管理方式
+- 当前验证机制
+- 当前失败恢复机制
+
+## 2. Multi-Agent 升级目标
+
+明确：
+
+哪些能力保持不变：
+
+例如：
+
+- Task Graph 是唯一任务来源
+- Runner 是最终裁判
+- AI 不允许自我宣布完成
+- Verification 必须独立执行
+
+
+哪些能力新增：
+
+例如：
+
+- Scheduler
+- Agent Pool
+- Workspace Isolation
+- Parallel Execution
+- Merge Strategy
+
+
+---
+
+# 第二阶段：设计新的架构
+
+设计目标：
+
+从：
+
+单 Agent Runner
+
+升级为：
+
+Multi-Agent Orchestrator
+
+
+目标架构：
+                DESIGN.md
+
+                    ↓
+
+          IMPLEMENTATION_PLAN.md
+
+                    ↓
+
+              TASK GRAPH
+
+             02_TASKS.json
+
+
+                    ↓
+
+
+             Scheduler
+
+
+    ┌───────────────┼───────────────┐
+
+
+    ↓               ↓               ↓
+	    ↓               ↓               ↓
+		    └───────────────┼───────────────┘
+
+
+                    ↓
+
+
+          Verification Engine
+
+
+                    ↓
+
+
+              Merge / Commit
+
+
+                    ↓
+
+
+              STATE UPDATE
+			  
+
+---
+
+# 第三阶段：设计新的任务模型
+
+当前 Task JSON 需要扩展。
+
+现在：
+
+```json
+{
+"id":"",
+"depends_on":[],
+"allowed_paths":[],
+"verify":[]
+}
+升级为：
+{
+"id":"",
+"title":"",
+
+"agent_type":
+[
+ "coding",
+ "testing",
+ "review",
+ "research"
+],
+
+"execution_mode":
+[
+ "serial",
+ "parallel",
+ "human_gate"
+],
+
+
+"depends_on":[],
+
+"allowed_paths":[],
+
+"workspace":"isolated",
+
+
+"context":
+
+{
+ "read_first":[],
+ "context_queries":[]
+},
+
+
+"expected_outputs":[],
+
+
+"acceptance":[],
+
+
+"verify":[]
+
+}
+请说明：
+
+为什么需要这些字段。
+
+第四阶段：实现 Scheduler
+
+新增：
+
+scheduler.py
+
+职责：
+
+读取 TASKS.json
+构建 DAG
+找出 ready tasks
+
+例如：
+
+如果：
+
+A
+
+↓
+
+B
+
+
+A
+
+↓
+
+C
+
+
+当 A 完成后：
+
+B 和 C 自动进入并行队列。
+
+Scheduler 必须支持：
+
+dependency checking
+parallel limit
+task locking
+failure propagation
+第五阶段：实现 Agent Pool
+
+新增：
+
+agent_pool.py
+
+负责：
+
+管理多个 Codex Agent。
+
+例如：
+
+Agent Pool
+
+    Agent-001
+        coding
+
+
+    Agent-002
+        testing
+
+
+    Agent-003
+        review
+
+
+要求：
+
+每个 Agent：
+
+必须拥有：
+
+独立 Context
+独立 Workspace
+独立日志
+
+禁止：
+
+多个 Agent 修改同一个工作目录。
+
+第六阶段：实现 Workspace Isolation
+
+优先采用：
+
+Git Worktree
+
+例如：
+
+repo
+
+├── main
+
+├── .agents/worktree/task-A
+
+├── .agents/worktree/task-B
+
+└── .agents/worktree/task-C
+
+
+要求：
+
+每个 Task：
+
+启动前：
+
+创建 worktree
+
+执行：
+
+AI修改代码
+
+完成：
+
+commit
+
+然后：
+
+进入 Merge 阶段。
+
+第七阶段：实现 Merge Controller
+
+新增：
+
+merge_controller.py
+
+职责：
+
+处理：
+
+多个 Agent 完成后的代码合并。
+
+流程：
+
+Agent A
+
+commit
+
+
+Agent B
+
+commit
+
+
+        ↓
+
+
+Merge Controller
+
+
+        ↓
+
+
+Conflict Check
+
+
+        ↓
+
+
+Verification
+
+
+        ↓
+
+
+main branch
+
+
+如果冲突：
+
+不要自动猜。
+
+进入：
+
+HUMAN_BLOCKER。
+
+第八阶段：保持原有 Verification 机制
+
+非常重要：
+
+不要相信 Agent 输出。
+
+保持：
+
+Runner Verification。
+
+每个任务必须：
+
+文件范围检查
+自动测试
+acceptance检查
+Git状态检查
+
+只有：
+
+Verification PASS
+
+才能：
+
+task = done
+
+第九阶段：失败恢复
+
+设计新的失败模型。
+
+例如：
+
+Agent A失败：
+
+状态：
+
+task-A
+
+status:
+
+failed
+
+保存：
+
+diff
+logs
+error summary
+
+重新启动：
+
+新的 Agent Context
+
+不要继续旧聊天。
+
+第十阶段：Human Gate
+
+保留人工控制。
+
+以下情况必须停止：
+
+merge conflict
+产品决策
+安全问题
+真实环境操作
+数据不可逆修改
+
+状态：
+
+awaiting_human
+
+第十一阶段：向后兼容
+
+非常重要。
+
+升级后：
+
+旧模式：
+
+ai_runner.py
+
+单 Agent执行
+
+仍然可以运行。
+
+新增：
+
+multi_runner.py
+
+多 Agent执行
+
+或者：
+
+ai_runner.py
+
+--mode single
+
+--mode multi
+
+第十二阶段：开发要求
+
+不要一次性修改所有代码。
+
+必须分阶段：
+
+Phase 1:
+
+设计文档
+
+Phase 2:
+
+任务模型升级
+
+Phase 3:
+
+Scheduler
+
+Phase 4:
+
+Agent Pool
+
+Phase 5:
+
+Worktree
+
+Phase 6:
+
+Merge Controller
+
+Phase 7:
+
+完整测试
+
+每个 Phase：
+
+必须：
+
+修改代码
+编写测试
+验证
+更新 STATE
+最终交付
+
+完成后生成：
+
+docs/MULTI_AGENT_FINAL_REPORT.md
+
+包含：
+
+新架构说明
+和旧 ai_runner 对比
+并行执行流程
+风险分析
+使用方法
+后续优化方向
+重要原则
+
+不要追求“更多 Agent”。
+
+目标不是：
+
+多个 AI 同时写代码。
+
+目标是：
+
+让多个 AI 在任务边界、依赖关系、验证规则和状态管理下协同完成软件工程。
+
+可靠性优先于并发数量。
+
+
+---
+
+我建议你后续把这个 V3 定义为：
+
+**方案3：Multi-Agent Task Graph Harness（AI 软件工厂雏形）**
+
+你的演进路线会非常完整：

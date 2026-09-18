@@ -1,0 +1,43 @@
+[
+  {
+    "id": "P01-T01",
+    "phase": "P01",
+    "title": "Replace with the first implementation task",
+    "agent_type": "coding",
+    "execution_mode": "serial",
+    "status": "todo",
+    "workspace": "isolated",
+    "goal": "Produce one bounded and independently verifiable result.",
+    "depends_on": [],
+    "context_queries": [
+      "rg -n \"replace-with-relevant-symbol\" src tests"
+    ],
+    "context": {
+      "read_first": [
+        "docs/harnessflow/00_REQUIREMENTS.md",
+        "docs/harnessflow/01_DESIGN.md"
+      ],
+      "context_queries": [
+        "rg -n \"replace-with-relevant-symbol\" src tests"
+      ]
+    },
+    "read_first": [
+      "docs/harnessflow/00_REQUIREMENTS.md",
+      "docs/harnessflow/01_DESIGN.md"
+    ],
+    "allowed_paths": [
+      "src/**",
+      "tests/**"
+    ],
+    "expected_outputs": [
+      "Implementation",
+      "Focused automated tests"
+    ],
+    "acceptance": [
+      "Replace with an observable acceptance condition"
+    ],
+    "verify": [
+      "python -m unittest discover -s tests"
+    ]
+  }
+]

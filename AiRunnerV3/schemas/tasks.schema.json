@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HarnessFlow task graph",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+      "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
+      "phase": { "type": "string" },
+      "title": { "type": "string", "minLength": 1 },
+      "agent_type": { "enum": ["coding", "testing", "review", "research"] },
+      "execution_mode": { "enum": ["auto", "serial", "parallel", "human_gate"] },
+      "status": { "enum": ["todo", "running", "blocked", "failed", "awaiting_human", "done", "verified"] },
+      "workspace": { "enum": ["isolated", "shared"] },
+      "context": {
+        "type": "object",
+        "properties": {
+          "read_first": { "$ref": "#/$defs/stringArray" },
+          "context_queries": { "$ref": "#/$defs/stringArray" }
+        },
+        "additionalProperties": false
+      },
+      "goal": { "type": "string", "minLength": 1 },
+      "depends_on": { "$ref": "#/$defs/stringArray" },
+      "context_queries": { "$ref": "#/$defs/stringArray" },
+      "read_first": { "$ref": "#/$defs/stringArray" },
+      "allowed_paths": { "$ref": "#/$defs/nonEmptyStringArray" },
+      "expected_outputs": { "$ref": "#/$defs/stringArray" },
+      "acceptance": { "$ref": "#/$defs/stringArray" },
+      "verify": { "$ref": "#/$defs/nonEmptyStringArray" }
+    },
+    "required": [
+      "id", "title", "execution_mode", "status", "goal",
+      "depends_on", "context_queries", "read_first", "allowed_paths",
+      "expected_outputs", "acceptance", "verify"
+    ]
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
