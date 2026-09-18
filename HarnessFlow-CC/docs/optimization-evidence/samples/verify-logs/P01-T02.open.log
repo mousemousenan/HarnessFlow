@@ -1,0 +1,11 @@
+===== attempt=1 cmd=1 =====
+phase: P01
+batch: P01-B1
+task: P01-T02
+instance: orch-A
+command: pytest tests/test_long.py -q
+workdir: .
+code_baseline: HEAD=cccccccc
+start: 2026-09-18T15:40:00+08:00
+----- stdout -----
+still running

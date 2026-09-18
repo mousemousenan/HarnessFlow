@@ -1,0 +1,10 @@
+{"ts":"2026-09-18T15:10:00+08:00","phase":"P01","batch":"","step":"phase_started","detail":"attempt=1 task=orch-A boundary=0"}
+{"ts":"2026-09-18T15:11:00+08:00","phase":"P01","batch":"P01-B1","step":"scope_written","detail":"scope=.git/harnessflow/active_scope.json"}
+{"ts":"2026-09-18T15:12:00+08:00","phase":"P01","batch":"P01-B1","step":"worker_dispatched","detail":"P01-T01 inst=w1 spawns=1"}
+{"ts":"2026-09-18T15:20:00+08:00","phase":"P01","batch":"P01-B1","step":"worker_returned","detail":"P01-T01 PASS evidence=src/app.py"}
+{"ts":"2026-09-18T15:25:00+08:00","phase":"P01","batch":"P01-B1","step":"verify_command_done","detail":"P01-T01 cmd=1 exit=0 log=.git/harnessflow/verify-logs/P01-T01.log"}
+{"ts":"2026-09-18T15:30:00+08:00","phase":"P01","batch":"P01-B1","step":"verifier_dispatched","detail":"batch=P01-B1 logs=.git/harnessflow/verify-logs/P01-T01.log"}
+{"ts":"2026-09-18T15:35:00+08:00","phase":"P01","batch":"P01-B1","step":"verifier_returned","detail":"P01-T01 PASS log=.git/harnessflow/verify-logs/P01-T01.log#verdict"}
+{"ts":"2026-09-18T15:40:00+08:00","phase":"P01","batch":"","step":"deliverable_written","detail":"path=docs/harnessflow/deliverables/P01.md"}
+{"ts":"2026-09-18T15:41:00+08:00","phase":"P01","batch":"P01-B1","step":"scope_cleared","detail":"scope=.git/harnessflow/active_scope.json"}
+{"ts":"2026-09-18T15:42:00+08:00","phase":"P01","batch":"","step":"phase_summary_ready","detail":"RESULT=PASS deliverable=docs/harnessflow/deliverables/P01.md"}

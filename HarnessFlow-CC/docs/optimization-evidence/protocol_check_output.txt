@@ -1,0 +1,22 @@
+now 2026-09-18T16:00:00+08:00
+[PASS] healthy
+  reconstruct {'verified': ['P01-T01'], 'implemented': [], 'pending': []}
+  heartbeat_age_min 18.0 ok True
+[PASS] missing
+  reason: 台账恢复不可用：文件不存在
+[PASS] empty
+  reason: 台账恢复不可用：空文件
+[PASS] v10
+  reconstruct {'verified': [], 'implemented': [], 'pending': []}
+  note: 尾部半行保留原状；恢复追加前先只追加换行隔离残行
+  note: L1: 旧阶段 P00，不作为当前实例心跳
+  note: L2: 旧阶段 P00，不作为当前实例心跳
+  note: L5: 非法时间/缺时区，不能作为新鲜心跳
+  note: L6: 未来时间，不能作为新鲜心跳
+  note: L7: 损坏行已跳过
+  heartbeat_age_min 11.0 ok True
+[PASS] v12_log
+[PASS] v13_open_log
+[PASS] v14_sensor
+[PASS] v14_empty_shell
+failed 0

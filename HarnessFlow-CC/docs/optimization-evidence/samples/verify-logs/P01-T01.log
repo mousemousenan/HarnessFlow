@@ -1,0 +1,50 @@
+===== attempt=1 cmd=1 =====
+phase: P01
+batch: P01-B1
+task: P01-T01
+instance: orch-A
+command: pytest tests/test_ok.py -q
+workdir: .
+code_baseline: HEAD=aaaaaaaa
+start: 2026-09-18T15:10:00+08:00
+end: 2026-09-18T15:10:08+08:00
+exit: 0
+----- stdout -----
+1 passed
+----- stderr -----
+
+===== attempt=1 cmd=2 =====
+phase: P01
+batch: P01-B1
+task: P01-T01
+instance: orch-A
+command: python -c "import sys; sys.exit(2)"
+workdir: .
+code_baseline: HEAD=aaaaaaaa
+start: 2026-09-18T15:10:09+08:00
+end: 2026-09-18T15:10:09+08:00
+exit: 2
+expected_exit: 2
+----- stdout -----
+----- stderr -----
+
+===== attempt=2 cmd=1 =====
+phase: P01
+batch: P01-B1
+task: P01-T01
+instance: orch-A
+command: pytest tests/test_ok.py -q
+workdir: .
+code_baseline: HEAD=bbbbbbbb
+start: 2026-09-18T15:20:00+08:00
+end: 2026-09-18T15:20:07+08:00
+exit: 0
+----- stdout -----
+1 passed
+----- stderr -----
+
+===== 独立验证结论 =====
+verifier_instance: ver-1
+ts: 2026-09-18T15:25:00+08:00
+task: P01-T01
+verdict: PASS

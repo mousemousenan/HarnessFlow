@@ -1,0 +1,7 @@
+{"ts":"2026-09-18T11:00:00+08:00","phase":"P00","batch":"","step":"phase_started","detail":"attempt=1 task=old"}
+{"ts":"2026-09-18T12:00:00+08:00","phase":"P00","batch":"","step":"phase_summary_ready","detail":"RESULT=PASS"}
+{"ts":"2026-09-18T15:48:00+08:00","phase":"P01","batch":"","step":"phase_started","detail":"attempt=2 task=orch-B boundary=2"}
+{"ts":"2026-09-18T15:49:00+08:00","phase":"P01","batch":"P01-B1","step":"scope_written","detail":"scope=.git/harnessflow/active_scope.json"}
+{"ts":"2026-09-18T15:50:00","phase":"P01","batch":"P01-B1","step":"worker_dispatched","detail":"missing timezone"}
+{"ts":"2026-09-18T18:00:00+08:00","phase":"P01","batch":"P01-B1","step":"worker_dispatched","detail":"future timestamp"}
+{"not":"json-complete"

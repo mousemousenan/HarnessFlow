@@ -1,0 +1,4 @@
+test project: C:\Users\saisn\AppData\Local\Temp\hf-opt-validation-20260918
+.git/harnessflow/phase_ledger.jsonl 1483 bytes
+.git/harnessflow/sensor-report-P01-B1.json 277 bytes
+.git/harnessflow/verify-logs/P01-T01.log 971 bytes
